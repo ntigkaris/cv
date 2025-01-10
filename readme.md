@@ -1,5 +1,5 @@
 |PROJECT|DESCRIPTION|
-|:---|:---|
+|:---:|:---|
 |<b>batalgo</b>|Function optimization using heuristic algorithms|
 |<b>covidstat</b>|Statistical analysis on coronavirus data|
 |<b>datapipe</b>|Flat file ingestion and database population using Python|
