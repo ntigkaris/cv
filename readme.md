@@ -1,7 +1,8 @@
 
 # cv
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+![made-with-python](https://github.com/user-attachments/assets/8f27fece-aa33-4c8b-93ce-0fe7f7a60c20)
+![made-with-matlab](https://github.com/user-attachments/assets/956d2f94-be7e-4476-9584-848d30498113)
 
 > Collection of personal projects that showcase my technical establishment.
 
