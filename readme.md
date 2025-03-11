@@ -8,11 +8,11 @@
 
 # Table of Contents
 
-- [batalgo](#batalgo)
-- [covidstat](#covidstat)
-- [datapipe](#datapipe)
-- [environet](#environet)
-- [mynet](#mynet)
+1. [batalgo](#batalgo)
+2. [covidstat](#covidstat)
+3. [datapipe](#datapipe)
+4. [environet](#environet)
+5. [mynet](#mynet)
 
 # batalgo
 
