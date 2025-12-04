@@ -1,5 +1,5 @@
 %% Coronavirus Data Analysis
-% Ntigkaris E. Alexandros
+% Alexandros E. Ntigkaris
 % MATLAB R2018a
 
 % In this project we will perform data analysis on coronavirus european and
@@ -381,3 +381,4 @@ xlabel('Time period (Weeks)');
 
 analyzeTS(1:length(grRate),grRate,5,...
     'Greece positivity rate time series analysis');
+
