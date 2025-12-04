@@ -1,4 +1,9 @@
-"""Ntigkaris Alexandros"""
+'''
+author:     Alexandros E. Ntigkaris
+python:     3.9.2
+numpy:      1.19.5
+matplotlib: 3.3.4
+'''
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -76,3 +81,4 @@ for i in range(3):
     plt.xticks([])
 
 plt.savefig(OUTDIR+"inference.png",dpi=300)
+
