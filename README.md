@@ -10,9 +10,7 @@
 
 1. [batalgo](#batalgo)
 2. [covidstat](#covidstat)
-3. [datapipe](#datapipe)
-4. [environet](#environet)
-5. [mynet](#mynet)
+3. [environet](#environet)
 
 # batalgo
 
@@ -34,16 +32,6 @@
 ![img](https://github.com/ntigkaris/cv/assets/87975862/b056ed05-7e9f-4034-8a05-7241b186405f)
 </div>
 
-# datapipe
-
-<div align="center">
-<br>
-<p>We implement flat-file ingestion and database population using Python.</p>
-<br>
-
-![img](https://github.com/ntigkaris/cv/assets/87975862/6ab2e8b6-5473-4562-9a2f-a53653cc93e1)
-</div>
-
 # environet
 
 <div align="center">
@@ -52,14 +40,4 @@
 <br>
 
 ![img](https://github.com/ntigkaris/cv/assets/87975862/79969682-d242-437c-97f8-0555dfa0a5b2)
-</div>
-
-# mynet
-
-<div align="center">
-<br>
-<p>We create a multi-layer perceptron from scratch.</p>
-<br>
-
-![img](https://github.com/ntigkaris/cv/assets/87975862/951c3708-03e2-4d3c-9d0e-43f5376208f4)
 </div>
