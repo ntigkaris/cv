@@ -68,19 +68,19 @@ class BatColony:
                 verbose : bool = None,
                 ) -> None:
     
-	    self.verbose = verbose
-		if self.verbose: logging.info('[BatColony]: Initializing...')
-	
+        self.verbose = verbose
+        if self.verbose: logging.info('[BatColony]: Initializing...')
+    
         self.entities = entities if entities else cfg.params['entities']
         self.timesteps = timesteps if timesteps else cfg.params['timesteps']
         self.c_alpha = alpha if alpha else cfg.params['alpha']
         self.c_gamma = gamma if gamma else cfg.params['gamma']
         
         try:
-		    self.benchmark_fn = cfg.benchmark[benchmark_fn] if benchmark_fn else cfg.benchmark['dejong']
+            self.benchmark_fn = cfg.benchmark[benchmark_fn] if benchmark_fn else cfg.benchmark['dejong']
         except:
-		    if self.verbose: logging.error(f'[BatColony]: Function "{benchmark_fn}" is not supported.')
-		    raise ValueError
+            if self.verbose: logging.error(f'[BatColony]: Function "{benchmark_fn}" is not supported.')
+            raise ValueError
         
         self.sleep_rate = sleep_rate if sleep_rate else cfg.params['sleep_rate']
         self.boundaries = boundaries if boundaries else cfg.params['boundaries']
@@ -99,12 +99,12 @@ class BatColony:
 
         if random_state: np.random.seed(random_state)
         self.position = None
-		
-		if self.verbose: logging.info('[BatColony]: Successfully initialized')
+        
+        if self.verbose: logging.info('[BatColony]: Successfully initialized')
 
     def fill(self,) -> None:
-	
-	    if self.verbose: logging.info('[BatColony]: Assigning agents...')
+    
+        if self.verbose: logging.info('[BatColony]: Assigning agents...')
 
         self.position = np.random.uniform(
                                         self.benchmark_fn[1][0],
@@ -140,8 +140,8 @@ class BatColony:
                                     self.position[:,1],
                                     **cfg.plot_params,
                                 )
-								
-		if self.verbose: logging.info('[BatColony]: Agents have been deployed')
+                                
+        if self.verbose: logging.info('[BatColony]: Agents have been deployed')
 
     def __validate_args(self,) -> None:
 
@@ -171,16 +171,16 @@ class BatColony:
             raise NotImplementedError #to-do
             arr = [a if a>=L else a if a<=H else H-a if(a<L) else L+a for a in arr]
         else:
-		    if self.verbose: logging.error('[BatColony]: Acceptable values: "closed", "periodic"')
-		    raise ValueError
+            if self.verbose: logging.error('[BatColony]: Acceptable values: "closed", "periodic"')
+            raise ValueError
 
     def run(self,) -> None:
-	
-	    if self.verbose: logging.info('[BatColony]: Running bat algorithm...')
+    
+        if self.verbose: logging.info('[BatColony]: Running bat algorithm...')
 
         if not self.position:
-		    if self.verbose: logging.error('[BatColony]: Your colony is empty.')
-		    raise RuntimeError
+            if self.verbose: logging.error('[BatColony]: Your colony is empty.')
+            raise RuntimeError
 
         current_state = np.zeros((self.entities,self._dimensions))
         
@@ -225,7 +225,6 @@ class BatColony:
                 self.__scatter.set_offsets(self.position)
                 plt.draw()
                 plt.pause(self.sleep_rate)
-		if self.verbose: logging.info('[BatColony]: Bat algorithm has finished running')
+        if self.verbose: logging.info('[BatColony]: Bat algorithm has finished running')
         if self.verbose: logging.info(f'[BatColony]: Best fitness score achieved: {self.best_fitness:.2e}')
         plt.show()
-
