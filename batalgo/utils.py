@@ -178,7 +178,7 @@ class BatColony:
     
         if self.verbose: logging.info('[BatColony]: Running bat algorithm...')
 
-        if not self.position:
+        if not np.any(self.position):
             if self.verbose: logging.error('[BatColony]: Your colony is empty.')
             raise RuntimeError
 
@@ -228,6 +228,7 @@ class BatColony:
         if self.verbose: logging.info('[BatColony]: Bat algorithm has finished running')
         if self.verbose: logging.info(f'[BatColony]: Best fitness score achieved: {self.best_fitness:.2e}')
         plt.show()
+
 
 
 
