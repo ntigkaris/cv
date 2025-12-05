@@ -1,9 +1,11 @@
-# setup
+'''
+Basic setup
+'''
 
-INDIR = "./"
-OUTDIR = "./"
-FEATURES = ["pm10_lag1","temp","rh"]
-TARGET = ["pm25"]
+INDIR = './'
+OUTDIR = './'
+FEATURES = ['pm10_lag1','temp','rh']
+TARGET = ['pm25']
 INPUT_DIM = len(FEATURES)
 OUTPUT_DIM = len(TARGET)
 HIDDEN_DIM = 5
