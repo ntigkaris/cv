@@ -339,7 +339,7 @@ grposrate = NewCases(startDate:endDate)*100./(NormPCR(startDate:endDate)+...
 % after we've defined Greece's 12-week data, we're gonna load EU's 12-week
 % data taken manually from the site's graph: https://www.stelios67pi.eu/testing.html
 
-load EUpositivityRate.mat
+load ../data/processed/EUpositivityRate.mat
 
 % -- Bootstrap test --
 
@@ -383,7 +383,3 @@ xlabel('Time period (Weeks)');
 
 analyzeTS(1:length(grRate),grRate,5,...
     'Greece positivity rate time series analysis');
-
-
-
-
