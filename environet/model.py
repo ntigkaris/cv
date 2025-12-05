@@ -1,10 +1,8 @@
-"""Ntigkaris Alexandros"""
-
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset
 
-from constants import *
+from config import *
 
 class AQY_DS(Dataset):
 
@@ -40,4 +38,3 @@ class AQY_NN(nn.Module):
                                )
     def forward(self,x):
         return self.net(x)
-
