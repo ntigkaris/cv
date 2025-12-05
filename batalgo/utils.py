@@ -3,7 +3,7 @@ import matplotlib.cm as cmap
 import matplotlib.pyplot as plt
 import logging
 
-logging.basicConfig(force=True, level=logging.info,format='%(asctime)s %(levelname)-8s %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
+logging.basicConfig(force=True,level=logging.info,format='%(asctime)s %(levelname)-8s %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
 
 class cfg:
 
@@ -228,3 +228,4 @@ class BatColony:
         if self.verbose: logging.info('[BatColony]: Bat algorithm has finished running')
         if self.verbose: logging.info(f'[BatColony]: Best fitness score achieved: {self.best_fitness:.2e}')
         plt.show()
+
