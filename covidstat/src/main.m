@@ -37,9 +37,11 @@ clear all; close all; clc
 
 % -- load our data --
 
-load EuropeanCountries.mat
-load ECDC-7Days-Testing.mat
-load FullEodyData.mat
+load ../data/processed/EuropeanCountries.mat
+load ../data/processed/ECDC-7Days-Testing.mat
+load ../data/processed/FullEodyData.mat
+
+addpath(genpath('utils'))
 
 %% *** TASK 01 ***
 
@@ -381,4 +383,5 @@ xlabel('Time period (Weeks)');
 
 analyzeTS(1:length(grRate),grRate,5,...
     'Greece positivity rate time series analysis');
+
 
