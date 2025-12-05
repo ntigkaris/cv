@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import pickle
 
 from model import AQY_DS,AQY_NN
-from constants import *
+from config import *
 
 def get_score(
               y1:np.array,
@@ -256,3 +256,4 @@ def predict_holdout(
         
 
     return ho_score
+
