@@ -1,5 +1,3 @@
-"""Ntigkaris Alexandros"""
-
 import numpy as np
 import pandas as pd
 import torch
@@ -11,21 +9,9 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import pickle
-import logging
 
 from model import AQY_DS,AQY_NN
 from constants import *
-
-message = " Different versions are used, results may differ!"
-try:
-    assert np.__version__ == "1.21.6"
-    assert pd.__version__ == "1.3.5"
-    assert sklearn.__version__ == "1.0.2"
-    assert torch.__version__ == "1.13.0+cu116"
-except:
-    logging.warning(message)
-
-# functions
 
 def get_score(
               y1:np.array,
@@ -42,18 +28,18 @@ def IoA(
         y1:np.array,
         y2:np.array,
         ) -> float:
-    """Index of Agreement"""
+    '''Index of Agreement'''
     return 1 - ( np.sum((y1-y2)**2) )/( np.sum((np.abs(y2-np.mean(y1))+np.abs(y1-np.mean(y1)))**2) )
 
 def make_preprocessing() -> tuple:
 
-    data = pd.read_csv(INDIR+"data.csv",)
-    data["pm10_lag1"] = data.pm10.shift(1) # lag1 feature (pm10)
+    data = pd.read_csv(INDIR+'data.csv',)
+    data['pm10_lag1'] = data.pm10.shift(1)
     data = data[1:].reset_index(drop=True)
-    data.interpolate(inplace=True) # handle missing values
+    data.interpolate(inplace=True)
 
-    holdout_data = pd.read_csv(INDIR+"holdout.csv")
-    holdout_data["pm10_lag1"] = holdout_data.pm10.shift(1)
+    holdout_data = pd.read_csv(INDIR+'holdout.csv')
+    holdout_data['pm10_lag1'] = holdout_data.pm10.shift(1)
     holdout_data = holdout_data[1:].reset_index(drop=True)
     holdout_data.interpolate(inplace=True)
 
@@ -62,11 +48,10 @@ def make_preprocessing() -> tuple:
     scalery = MinMaxScaler(feature_range=(0,1),)
     holdout_data[TARGET] = scalery.fit_transform(holdout_data[TARGET])
 
-    # cross validation
     Fold = KFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
     for n, (train_index, val_index) in enumerate(Fold.split(data[FEATURES], data[TARGET])):
-        data.loc[val_index, "fold"] = int(n)
-    data["fold"] = data["fold"].astype(int)
+        data.loc[val_index, 'fold'] = int(n)
+    data['fold'] = data['fold'].astype(int)
 
     return data,holdout_data,scalery
 
@@ -121,8 +106,8 @@ def make_NeuralNetwork(
                        fold,
                        ) -> tuple:
 
-    train_folds = df[df["fold"] != fold].reset_index(drop=True)
-    eval_fold = df[df["fold"] == fold].reset_index(drop=True)
+    train_folds = df[df['fold'] != fold].reset_index(drop=True)
+    eval_fold = df[df['fold'] == fold].reset_index(drop=True)
 
     scaler_x = MinMaxScaler(feature_range=(0,1),)
     train_folds[FEATURES] = scaler_x.fit_transform(train_folds[FEATURES])
@@ -165,7 +150,7 @@ def make_NeuralNetwork(
                                 momentum=MOMENTUM,
                                 )
 
-    criterion = nn.MSELoss(reduction="mean")
+    criterion = nn.MSELoss(reduction='mean')
 
     labels = eval_fold[TARGET].values
 
@@ -178,9 +163,9 @@ def make_NeuralNetwork(
                        scaler_y.inverse_transform(preds.reshape(-1,OUTPUT_DIM)),
                       )
 
-    torch.save({"model":model.state_dict(),
-                "predictions":preds},
-                OUTDIR + f"model_fold{fold}.pth")
+    torch.save({'model':model.state_dict(),
+                'predictions':preds},
+                OUTDIR + f'model_fold{fold}.pth')
 
     return score
 
@@ -189,8 +174,8 @@ def make_LinearRegression(
                           fold,
                           ) -> tuple:
 
-    train_folds = df[df["fold"] != fold].reset_index(drop=True)
-    eval_fold = df[df["fold"] == fold].reset_index(drop=True)
+    train_folds = df[df['fold'] != fold].reset_index(drop=True)
+    eval_fold = df[df['fold'] == fold].reset_index(drop=True)
 
     scalerx = MinMaxScaler(feature_range=(0,1),)
     train_folds[FEATURES] = scalerx.fit_transform(train_folds[FEATURES])
@@ -210,7 +195,7 @@ def make_LinearRegression(
                        scalery.inverse_transform(y_pred),
                       )
 
-    pickle.dump(model, open(OUTDIR+f"baseline_fold{fold}.pkl","wb"))
+    pickle.dump(model, open(OUTDIR+f'baseline_fold{fold}.pkl','wb'))
 
     return score
 
@@ -240,9 +225,9 @@ def predict_holdout(
                                 )
 
         try:
-            current_model.load_state_dict(torch.load(OUTDIR + f"model_fold{f}.pth")["model"])
+            current_model.load_state_dict(torch.load(OUTDIR + f'model_fold{f}.pth')['model'])
         except:
-            raise RuntimeError("Neural network has not been fit yet!")
+            raise RuntimeError('Neural network has not been fit yet!')
 
         ho_preds_nn = []
 
@@ -258,9 +243,9 @@ def predict_holdout(
                             scaler.inverse_transform(ho_preds_nn.reshape(-1,OUTPUT_DIM)))
         
         try:
-            current_baseline = pickle.load(open(OUTDIR+f"baseline_fold{f}.pkl","rb"))
+            current_baseline = pickle.load(open(OUTDIR+f'baseline_fold{f}.pkl','rb'))
         except:
-            raise RuntimeError("Linear regression has not been fit yet!")
+            raise RuntimeError('Linear regression has not been fit yet!')
             
         ho_preds_lr = current_baseline.predict(df[FEATURES])
 
@@ -269,4 +254,5 @@ def predict_holdout(
         ho_score[f,1,2] = IoA(scaler.inverse_transform(ho_labels.reshape(-1,1)),
                             scaler.inverse_transform(ho_preds_lr.reshape(-1,1)))
         
+
     return ho_score
