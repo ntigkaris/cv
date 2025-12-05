@@ -256,4 +256,3 @@ def predict_holdout(
         
 
     return ho_score
-
