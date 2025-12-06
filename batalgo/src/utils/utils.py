@@ -146,7 +146,7 @@ class BatColony:
     def __validate_args(self,) -> None:
 
         attributes = [attr for attr in vars(self).keys() if attr not in ['boundaries','benchmark_fn']]
-        for x in attributes: assert getattr(self,x) > 0, 'Values cannot be non-negative.'
+        for x in attributes: assert getattr(self,x) > 0, 'Values must be non-negative.'
 
     def __get_fitness(self,
                     arr : np.array,
@@ -228,6 +228,7 @@ class BatColony:
         if self.verbose: logging.info('[BatColony]: Bat algorithm has finished running')
         if self.verbose: logging.info(f'[BatColony]: Best fitness score achieved: {self.best_fitness:.2e}')
         plt.show()
+
 
 
 
