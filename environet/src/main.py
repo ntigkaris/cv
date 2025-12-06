@@ -16,9 +16,9 @@ import matplotlib.pyplot as plt
 from tqdm.auto import tqdm
 import logging
 
-from ./utils/config import *
-from ./utils/functions import make_preprocessing, predict_holdout
-from ./utils/functions import make_NeuralNetwork, make_LinearRegression
+from utils.config import *
+from utils.functions import make_preprocessing, predict_holdout
+from utils.functions import make_NeuralNetwork, make_LinearRegression
 
 logging.basicConfig(force=True,level=logging.INFO,format='%(asctime)s %(levelname)-8s %(message)s',datefmt='%Y-%m-%d %H:%M:%S')
 plt.style.use('ggplot')
