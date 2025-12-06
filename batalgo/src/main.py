@@ -6,7 +6,7 @@ matplotlib: 3.3.4
 logging:    0.4.9.6
 '''
 
-from utils import BatColony
+from ./utils/utils import BatColony
 
 params = {
             'entities':15,
@@ -24,3 +24,4 @@ if __name__ == '__main__':
     bats.fill()
     bats.run()
     
+
