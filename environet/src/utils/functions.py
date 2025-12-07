@@ -1,17 +1,19 @@
-import numpy as np
-import pandas as pd
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
+
 import sklearn
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+import numpy as np
+import pandas as pd
 import pickle
 
-from model import AQY_DS,AQY_NN
 from config import *
+from model import AQY_DS,AQY_NN
 
 def get_score(
               y1:np.array,
@@ -213,8 +215,8 @@ def predict_holdout(
                     drop_last=False,
                     )
 
-    ho_score = np.full((N_FOLDS,2,3),fill_value=np.nan)
-    ho_labels = df[TARGET].values
+    h_score = np.full((N_FOLDS,2,3),fill_value=np.nan)
+    h_labels = df[TARGET].values
 
     for f in range(N_FOLDS):
 
@@ -229,30 +231,30 @@ def predict_holdout(
         except:
             raise RuntimeError('Neural network has not been fit yet!')
 
-        ho_preds_nn = []
+        h_preds_nn = []
 
         for hX,hy in hdl:
             with torch.no_grad():
                 ypred = current_model(hX.float())
-            ho_preds_nn.append(ypred.numpy())
-        ho_preds_nn = np.concatenate(ho_preds_nn)
+            h_preds_nn.append(ypred.numpy())
+        h_preds_nn = np.concatenate(h_preds_nn)
 
-        ho_score[f,0,:2] = get_score(scaler.inverse_transform(ho_labels.reshape(-1,OUTPUT_DIM)),
-                                    scaler.inverse_transform(ho_preds_nn.reshape(-1,OUTPUT_DIM)))[:2]
-        ho_score[f,0,2] = IoA(scaler.inverse_transform(ho_labels.reshape(-1,OUTPUT_DIM)),
-                            scaler.inverse_transform(ho_preds_nn.reshape(-1,OUTPUT_DIM)))
+        h_score[f,0,:2] = get_score(scaler.inverse_transform(h_labels.reshape(-1,OUTPUT_DIM)),
+                                    scaler.inverse_transform(h_preds_nn.reshape(-1,OUTPUT_DIM)))[:2]
+        h_score[f,0,2] = IoA(scaler.inverse_transform(h_labels.reshape(-1,OUTPUT_DIM)),
+                            scaler.inverse_transform(h_preds_nn.reshape(-1,OUTPUT_DIM)))
         
         try:
             current_baseline = pickle.load(open(OUTDIR+f'baseline_fold{f}.pkl','rb'))
         except:
             raise RuntimeError('Linear regression has not been fit yet!')
             
-        ho_preds_lr = current_baseline.predict(df[FEATURES])
+        h_preds_lr = current_baseline.predict(df[FEATURES])
 
-        ho_score[f,1,:2] = get_score(scaler.inverse_transform(ho_labels.reshape(-1,1)),
-                                    scaler.inverse_transform(ho_preds_lr.reshape(-1,1)))[:2]
-        ho_score[f,1,2] = IoA(scaler.inverse_transform(ho_labels.reshape(-1,1)),
-                            scaler.inverse_transform(ho_preds_lr.reshape(-1,1)))
+        h_score[f,1,:2] = get_score(scaler.inverse_transform(h_labels.reshape(-1,1)),
+                                    scaler.inverse_transform(h_preds_lr.reshape(-1,1)))[:2]
+        h_score[f,1,2] = IoA(scaler.inverse_transform(h_labels.reshape(-1,1)),
+                            scaler.inverse_transform(h_preds_lr.reshape(-1,1)))
         
 
-    return ho_score
+    return h_score
