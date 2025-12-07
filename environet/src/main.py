@@ -24,7 +24,7 @@ logging.basicConfig(force=True,level=logging.INFO,format='%(asctime)s %(levelnam
 plt.style.use('ggplot')
 
 if __name__ == '__main__':
-    df,holdout_df,ho_scaler = make_preprocessing()
+    df,h_df,h_scaler = make_preprocessing()
     
     total_scores = np.full((N_FOLDS,2,3),fill_value=np.nan) # (n_folds,n_models,n_metrics)
     
@@ -38,15 +38,11 @@ if __name__ == '__main__':
     logging.info(f'[ANN] mae: {train_score[0,0]:.4f} rmse: {train_score[0,1]:.4f} r2: {train_score[0,2]:.4f}')
     logging.info(f'[LNR] mae: {train_score[1,0]:.4f} rmse: {train_score[1,1]:.4f} r2: {train_score[1,2]:.4f}')
     
-    ho_scores = predict_holdout(holdout_df,ho_scaler)
-    holdout_score = np.mean(ho_scores,axis=0)
+    h_scores = predict_holdout(h_df,h_scaler)
+    h_score = np.mean(h_scores,axis=0)
     
-    logging.info(f'[ANN] mae: {holdout_score[0,0]:.4f} rmse: {holdout_score[0,1]:.4f} IoA: {holdout_score[0,2]:.4f}')
-    logging.info(f'[LNR] mae: {holdout_score[1,0]:.4f} rmse: {holdout_score[1,1]:.4f} IoA: {holdout_score[1,2]:.4f}')
-    
-    colors = ['red','#7680b5','#44bb66','orange','brown','black']
-    colors_aux = [color for color in colors for _ in (0, 1)]
-    metrics = ['MAE','RMSE',r'$R^2$']
+    logging.info(f'[ANN] mae: {h_score[0,0]:.4f} rmse: {h_score[0,1]:.4f} IoA: {h_score[0,2]:.4f}')
+    logging.info(f'[LNR] mae: {h_score[1,0]:.4f} rmse: {h_score[1,1]:.4f} IoA: {h_score[1,2]:.4f}')
     
     plt.figure(figsize=(18,5))
     
@@ -55,9 +51,9 @@ if __name__ == '__main__':
         plt.bar(
                 range(12),
                 np.concatenate([total_scores[:,:,i].flatten(),train_score[:,i].flatten()],axis=0),
-                color=colors_aux,
+                color=COLORS_AUX,
                 )
-        plt.title(metrics[i])
+        plt.title(METRICS[i])
         plt.xticks([])
     
     plt.savefig(OUTDIR+'training.png',dpi=300)
@@ -68,11 +64,12 @@ if __name__ == '__main__':
         plt.subplot(1,3,i+1)
         plt.bar(
                 range(6),
-                np.concatenate([ho_scores[:,0,i].flatten(),holdout_score[0,i].flatten()],axis=0),
-                color=colors,
+                np.concatenate([h_scores[:,0,i].flatten(),h_score[0,i].flatten()],axis=0),
+                color=COLORS,
                 )
-        plt.title(metrics[i]) if (i != 2) else plt.title('IoA')
+        plt.title(METRICS[i]) if (i != 2) else plt.title('IoA')
         plt.yticks(np.arange(0,13,1)) if (i != 2) else plt.yticks(np.arange(0,1,0.1))
         plt.xticks([])
     
     plt.savefig(OUTDIR+'inference.png',dpi=300)
+
